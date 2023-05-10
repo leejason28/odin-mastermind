@@ -1,0 +1,53 @@
+seems like it would be nice to see the whole board (history) at all times so:
+class Board
+    initialize with 12 empty guesses - the topmost empty guess will be filled with user input 
+    initialize with 12 empty hints - hints (black and white key pegs) will be given corresponding to the guesses
+        maybe guesses and hints can be stored in a @guesses=Array.new(12){Guess.new()} and @hints=Array.new(12){Hints.new()} 
+        when user inputs a guess (ex: first guess) then @guesses[0] = Guess.new(user_input)
+    initialize a master code randomly - @master=randomgeneratecode
+
+    @current_guess to track most recent guess for corresponding hint generation
+    @current_round to track which round the game is in and to make sure correct guess is updated
+        updates every time a user gives a valid guess and the computer returns the corresponding hint
+        game ends when @current_round>12
+    @current_hint to check #blackpegs in the generated hint to see if the player has won the game 
+
+    maybe have to override the to_s method so that 'puts board' will output for i in 0..11 guesses[i] + hints[i] for user's sake
+
+
+the board should display all previous guesses so:
+class Guess 
+    initialize with user input for 4 colors (maybe an array of strings might be easy => @code=['black', 'blue', 'red', 'yellow'])
+
+    def initialize(c1,c2,c3,c4)
+        @code = [c1,c2,c3,c4]
+
+
+hints need to be generated whenever a guess is received:
+class Hint 
+    examine the @current_guess to generate a hint with relevant information 
+    probably only needs good instantiation method to give proper information 
+        take in a guess as input for instantiation to create:
+        (maybe a length-2 array where arr[0] is # white pegs and arr[1] is # black pegs)
+    
+    def initialize(guess)
+        logic for comparing guess to master code to count proper number of white and black pegs (probably some kind of enumerable methods)
+        @hints = [#white, #black]
+        if #black == 4
+            end game -> player wins
+
+
+will just use strings to represent pegs - doesnt seem necessary to have a whole class for pegs. 
+we only need to know position and color, which can be easily represented with an array of colors (strings)
+
+
+
+then refactor code to allow for human to be code maker
+    class Board
+        @codemaker = gets -> user can choose human or computer to be code maker (computer is codemaker by default) 
+            if computer is guesser, just have computer generate random guesses instead of asking for user input
+            maybe better to use 'codemaker' and 'codeguesser' than 'player' and 'computer'
+
+    guesses will be generated randomly (at least the first one before adding more computer intelligence)
+
+    nothing to change for hints
