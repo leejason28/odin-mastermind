@@ -154,25 +154,5 @@ class Hint
 
 end
 
-#b = Board.new
-#g = Guess.new('blue', 'red', 'green', 'yellow')
-#b.guesses[0] = g
-#h = b.generate_hint(b.guesses[0])
-#b.hints[0] = h
-#b.output_gamestate
-
-#b2 = Board.new
-#b2.master = ['red', 'green', 'blue', 'yellow']
-#g2 = Guess.new('red', 'yellow', 'blue', 'red')
-#user_input = gets
-#p user_input
-#user_code = user_input.split
-#p user_code
-#user_guess = Guess.new(user_code[0].to_s, user_code[1].to_s, user_code[2].to_s, user_code[3].to_s)
-#h2 = b2.generate_hint(user_guess)
-#p h2
-#h3 = b2.generate_hint(g2)
-#p h3
-
-b3 = Board.new
-b3.play
+b = Board.new
+b.play
