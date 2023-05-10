@@ -37,11 +37,18 @@ class Board
         offset += 1
       end
     end
-    for i in 0..guess_copy.length
-      if master_copy.include?(guess_copy[i])
-        pegs[0] += 1
+    #for i in 0..guess_copy.length
+      #if master_copy.include?(guess_copy[i])
+        #pegs[0] += 1
+      #end
+    #end
+    guess_copy.each do |color|
+      ind = master_copy.index(color)
+      if ind
+        master_copy.delete_at(ind)
       end
     end
+    pegs[0] += (4 - master_copy.length - pegs[1])
     if pegs[1] == 4
       @game_over = true
     end
@@ -51,7 +58,6 @@ class Board
   def play
     p "Welcome to Mastermind. Try to guess the right color code within 12 tries."
     p "Duplicates and blanks are allowed."
-    p "master = #{@master}"
     self.output_gamestate
     while @game_over == false
       p "Make a guess. A valid guess comes in the form 'color1, color2, color3, color4'." 
@@ -60,7 +66,11 @@ class Board
       user_code = user_input.split
       user_guess = Guess.new(user_code[0], user_code[1], user_code[2], user_code[3])
       @guesses[@current_round] = user_guess
-      @hints[@current_round] = generate_hint(user_guess)
+      @hints[@current_round] = self.generate_hint(user_guess)
+      
+      p @guesses[@current_round]
+      p @hints[@current_round]
+
       @current_round += 1
       if @current_round == 12
         @game_over = true
@@ -112,4 +122,11 @@ end
 #b.output_gamestate
 
 b2 = Board.new
-b2.play
+b2.master = ['red', 'green', 'blue', 'yellow']
+g2 = Guess.new('red', 'yellow', 'blue', 'red')
+h2 = b2.generate_hint(g2)
+p h2
+
+#b3 = Board.new
+#p b3.master
+#b3.play
