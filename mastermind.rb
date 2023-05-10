@@ -64,6 +64,9 @@ class Board
       p "The color options are: red, green, blue, yellow, pink, orange, or blank."
       user_input = gets
       user_code = user_input.split
+      if valid_move?(user_code) == false
+        next
+      end
       user_guess = Guess.new(user_code[0], user_code[1], user_code[2], user_code[3])
       @guesses[@current_round] = user_guess
       @hints[@current_round] = self.generate_hint(user_guess)
@@ -84,6 +87,15 @@ class Board
     for i in 0..11
       p [@guesses[i].code, @hints[i].pegs]
     end
+  end
+
+  def valid_move?(code)
+    for i in 0..3
+      if @colors.include?(code[i]) == false
+        return false
+      end
+    end
+    return true
   end
 
 end
