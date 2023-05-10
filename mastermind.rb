@@ -60,17 +60,13 @@ class Board
     p "Duplicates and blanks are allowed."
     self.output_gamestate
     while @game_over == false
-      p "Make a guess. A valid guess comes in the form 'color1, color2, color3, color4'." 
+      p "Make a guess. A valid guess comes in the form 'color1 color2 color3 color4'." 
       p "The color options are: red, green, blue, yellow, pink, orange, or blank."
       user_input = gets
       user_code = user_input.split
-      user_guess = Guess.new(user_code[0], user_code[1], user_code[2], user_code[3])               #bug is somewhere in how we generate user guesses
+      user_guess = Guess.new(user_code[0], user_code[1], user_code[2], user_code[3])
       @guesses[@current_round] = user_guess
       @hints[@current_round] = self.generate_hint(user_guess)
-      
-      p @guesses[@current_round]
-      p @hints[@current_round]
-
       @current_round += 1
       if @current_round == 12
         @game_over = true
@@ -121,15 +117,18 @@ end
 #b.hints[0] = h
 #b.output_gamestate
 
-b2 = Board.new
-b2.master = ['red', 'green', 'blue', 'yellow']
-g2 = Guess.new('red', 'yellow', 'blue', 'red')
-user_input = gets
-user_code = user_input.split
-user_guess = Guess.new(user_code[0].to_s, user_code[1].to_s, user_code[2].to_s, user_code[3].to_s)
-h2 = b2.generate_hint(user_guess)
-p h2
+#b2 = Board.new
+#b2.master = ['red', 'green', 'blue', 'yellow']
+#g2 = Guess.new('red', 'yellow', 'blue', 'red')
+#user_input = gets
+#p user_input
+#user_code = user_input.split
+#p user_code
+#user_guess = Guess.new(user_code[0].to_s, user_code[1].to_s, user_code[2].to_s, user_code[3].to_s)
+#h2 = b2.generate_hint(user_guess)
+#p h2
+#h3 = b2.generate_hint(g2)
+#p h3
 
-#b3 = Board.new
-#p b3.master
-#b3.play
+b3 = Board.new
+b3.play
