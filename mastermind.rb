@@ -10,6 +10,7 @@ class Board
     @colors = ['red', 'green', 'blue', 'yellow', 'pink', 'orange', 'blank']
     @master = generate_code
     @game_over = false
+    @codemaker = 'computer'
   end
 
   def generate_code
@@ -37,11 +38,6 @@ class Board
         offset += 1
       end
     end
-    #for i in 0..guess_copy.length
-      #if master_copy.include?(guess_copy[i])
-        #pegs[0] += 1
-      #end
-    #end
     guess_copy.each do |color|
       ind = master_copy.index(color)
       if ind
@@ -58,28 +54,64 @@ class Board
   def play
     p "Welcome to Mastermind. Try to guess the right color code within 12 tries."
     p "Duplicates and blanks are allowed."
+    p "Would you like to be codemaker or codeguesser? Please type 'codemaker' if so. Otherwise, you will be the guesser."
+    user_response = gets
+    if user_response.gsub("\n","") == 'codemaker'
+      @codemaker = 'player'
+    end
     self.output_gamestate
-    while @game_over == false
-      p "Make a guess. A valid guess comes in the form 'color1 color2 color3 color4'." 
+    if @codemaker == 'computer'
+      while @game_over == false
+        p "Make a guess. A valid guess comes in the form 'color1 color2 color3 color4'." 
+        p "The color options are: red, green, blue, yellow, pink, orange, or blank."
+        user_input = gets
+        user_code = user_input.split
+        if valid_move?(user_code) == false
+          next
+        end
+        user_guess = Guess.new(user_code[0], user_code[1], user_code[2], user_code[3])
+        @guesses[@current_round] = user_guess
+        @hints[@current_round] = self.generate_hint(user_guess)
+        @current_round += 1
+        if @current_round == 12
+          @game_over = true
+        end
+        self.output_gamestate
+      end
+      if @current_round == 12
+        p "You lose."
+      else
+        p "You win!"
+      end
+    else
+      p "Make a code. A valid code comes in the form 'color1 color2 color3 color4'." 
       p "The color options are: red, green, blue, yellow, pink, orange, or blank."
       user_input = gets
       user_code = user_input.split
-      if valid_move?(user_code) == false
-        next
+      while valid_move?(user_code) == false
+        p "Enter a valid code. A valid code comes in the form 'color1 color2 color3 color4'"
+        p "The color options are: red, green, blue, yellow, pink, orange, or blank."
+        user_input = gets
+        user_code = user_input.split
       end
       user_guess = Guess.new(user_code[0], user_code[1], user_code[2], user_code[3])
-      @guesses[@current_round] = user_guess
-      @hints[@current_round] = self.generate_hint(user_guess)
-      @current_round += 1
-      if @current_round == 12
-        @game_over = true
+      @master = user_guess.code
+      while @game_over == false
+        comp_code = generate_code
+        comp_guess = Guess.new(comp_code[0], comp_code[1], comp_code[2], comp_code[3])
+        @guesses[@current_round] = comp_guess
+        @hints[@current_round] = self.generate_hint(comp_guess)
+        @current_round += 1
+        if @current_round == 12
+          @game_over = true
+        end
+        self.output_gamestate
       end
-      self.output_gamestate
-    end
-    if @current_round == 12
-      p "You lose."
-    else
-      p "You win!"
+      if @current_round == 12
+        p "You win!"
+      else
+        p "You lose."
+      end
     end
   end
 
