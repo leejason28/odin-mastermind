@@ -64,7 +64,7 @@ class Board
       p "The color options are: red, green, blue, yellow, pink, orange, or blank."
       user_input = gets
       user_code = user_input.split
-      user_guess = Guess.new(user_code[0], user_code[1], user_code[2], user_code[3])
+      user_guess = Guess.new(user_code[0], user_code[1], user_code[2], user_code[3])               #bug is somewhere in how we generate user guesses
       @guesses[@current_round] = user_guess
       @hints[@current_round] = self.generate_hint(user_guess)
       
@@ -124,7 +124,10 @@ end
 b2 = Board.new
 b2.master = ['red', 'green', 'blue', 'yellow']
 g2 = Guess.new('red', 'yellow', 'blue', 'red')
-h2 = b2.generate_hint(g2)
+user_input = gets
+user_code = user_input.split
+user_guess = Guess.new(user_code[0].to_s, user_code[1].to_s, user_code[2].to_s, user_code[3].to_s)
+h2 = b2.generate_hint(user_guess)
 p h2
 
 #b3 = Board.new
